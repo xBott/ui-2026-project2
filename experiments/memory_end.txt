@@ -1,0 +1,4 @@
+            runs  solved  solved_%  gens_median  gens_mean  moves_median  time_mean
+label                                                                              
+wrap=False   100      97      97.0         40.0       55.3          44.0        0.8
+wrap=True    100      99      99.0         31.0       45.4          48.0        0.7

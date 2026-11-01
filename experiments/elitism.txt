@@ -1,0 +1,5 @@
+          runs  solved  solved_%  gens_median  gens_mean  moves_median  time_mean
+label                                                                            
+elite=0    100      82      82.0         47.5       68.1          57.0        1.4
+elite=10   100     100     100.0         27.5       38.1          46.0        0.6
+elite=2    100      97      97.0         40.0       55.3          44.0        0.8

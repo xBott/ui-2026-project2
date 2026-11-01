@@ -1,0 +1,4 @@
+                                                runs  solved  solved_%  gens_median  gens_mean  moves_median  time_mean
+label                                                                                                                  
+ROULETTE / elite=2 / insert=0.05 / wrap=False    100      97      97.0         40.0       55.3          44.0        0.8
+TOURNAMENT / elite=10 / insert=0.0 / wrap=True   100      98      98.0         17.0       25.3          44.0        0.5

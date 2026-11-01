@@ -1,0 +1,4 @@
+               runs  solved  solved_%  gens_median  gens_mean  moves_median  time_mean
+label                                                                                 
+init_cells=16   100      98      98.0         54.0       71.7          44.5        1.0
+init_cells=64   100      97      97.0         40.0       55.3          44.0        0.8

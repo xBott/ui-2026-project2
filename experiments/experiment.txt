@@ -1,0 +1,5 @@
+                  runs  solved  solved_%  gens_median  gens_mean  moves_median  time_mean
+label                                                                                    
+best               100     100     100.0         16.0       24.0          40.0        0.4
+best + find-best   100     100     100.0         16.0       24.0          18.0        5.2
+default            100      96      96.0         32.0       43.9          44.0        0.7
