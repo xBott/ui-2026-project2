@@ -339,9 +339,7 @@ the median are within random variation – only larger gaps say something about 
 ![Roulette vs tournament](plots/selection/success.png)
 
 Roulette solved 97 % of the runs, tournament (size 3) 94 %; tournament is faster at the start (median 32.5 vs 40
-generations) and finds shorter paths (38 vs 44 moves). An earlier, larger run with about 200 seeds per method
-(still in `runs.csv`) showed the same picture: roulette 99 % solved, tournament 93 %. Too much selection pressure is
-**not** the reason – the [tournament-size comparison](#tournament-size) shows that a tournament of 5 does better than
+generations) and finds shorter paths (38 vs 44 moves). Too much selection pressure is **not** the reason – the [tournament-size comparison](#tournament-size) shows that a tournament of 5 does better than
 roulette; a tournament of 3 is simply too weak.
 
 ### Tournament size
@@ -440,7 +438,7 @@ more with `--find-best` to see how short the paths get. The numbers below are fr
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | **best** | **100 %** | **74 %** | **92 %** | **16** | **24.0** | **24.0** | 40 |
 | best + find-best | 100 % | 74 % | 92 % | 16 | 24.0 | 24.0 | **18** |
-| default | 96 % | 34 % | 66 % | 32 | 43.9 | 54.2 | 44 |
+| default | 96 % | 34 % | 66 % | 32 | 43.9 | 54.1 | 44 |
 
 *Gens* and *moves* count only solved runs. The *score* combines speed and reliability: it is the mean number of
 generations to find all treasures, where an unsolved run counts as 300 (the generation limit). Lower is better.
@@ -505,7 +503,7 @@ behaviour.
   search faster, but a run stops at the first path that collects every treasure, however long it is.
 - **`--find-best` brings the paths close to the optimum:** median 18 moves, middle half 16–22, the longest 68.
   26 of the 100 runs found the shortest possible path (16 moves) and 69 have at most 20 moves. It costs time – every
-  run uses all 300 generations, 5.4 s per run instead of 0.4 s.
+  run uses all 300 generations, 5.2 s per run instead of 0.4 s.
 
 **Summary.** The best configuration solved every run on new seeds, about twice as fast as the default settings.
 Combined with `--find-best` it finds paths close to the shortest possible one.

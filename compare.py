@@ -115,7 +115,7 @@ def main():
     comparisons = args.comparisons or list(COMPARISONS)
     names = list(dict.fromkeys(c for comparison in comparisons for c in COMPARISONS[comparison][1]))
 
-    run_configurations({n: CONFIGURATIONS[n] for n in names}, range(1, args.seeds + 1), OUT / "runs")
+    run_configurations({name: CONFIGURATIONS[name] for name in names}, range(1, args.seeds + 1), OUT / "runs")
     for comparison in comparisons:
         compare(comparison, *COMPARISONS[comparison])
     print(f"\nTables in {OUT}/, graphs in {PLOTS}/<comparison>/")

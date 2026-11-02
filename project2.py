@@ -151,12 +151,8 @@ class Grid():
 
 class Memory():
 
-    def __init__(self, *, data: list[int] = []):
-
-        if len(data) <= 1:
-            raise ValueError(f"Memory must have >1 cells.")
-
-        self._data = [value & 0xFF for value in data]
+    def __init__(self, *, data: Sequence[int]):
+        self.load(data)
 
     @property
     def size(self):
