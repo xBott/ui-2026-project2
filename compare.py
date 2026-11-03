@@ -53,6 +53,7 @@ COMPARISONS: dict[str, tuple[list[str], list[str]]] = {
     "tuned": (["selection", "elite", "insert", "wrap"], ["baseline", "tuned"]),
 }
 
+
 def run(task: tuple[dict, int, Path]):
 
     settings, seed, log = task
@@ -60,12 +61,14 @@ def run(task: tuple[dict, int, Path]):
     with open(os.devnull, "w") as devnull, redirect_stdout(devnull):
         project2.main(**BASE, **settings, seed=seed, generations=GENERATIONS, delay=0, log_path=log)
 
+
 def merge(parts: list[Path], target: Path):
 
     with target.open("w", encoding="utf-8") as out:
         for i, part in enumerate(parts):
             lines = part.read_text(encoding="utf-8").splitlines(keepends=True)
             out.writelines(lines if i == 0 else lines[1:])
+
 
 def run_configurations(configurations: dict[str, dict], seeds: range, out: Path):
 
@@ -85,6 +88,7 @@ def run_configurations(configurations: dict[str, dict], seeds: range, out: Path)
 
     shutil.rmtree(tmp)
 
+
 def plot_all(csv: Path, group: list[str], out: Path) -> str:
 
     df, runs = plot.load(csv, group)
@@ -95,6 +99,7 @@ def plot_all(csv: Path, group: list[str], out: Path) -> str:
     plt.close("all")
     return plot.summary(runs).to_string()
 
+
 def compare(name: str, group: list[str], configurations: list[str]):
     csv = OUT / f"{name}.csv"
     merge([OUT / "runs" / f"{c}.csv" for c in configurations], csv)
@@ -102,6 +107,7 @@ def compare(name: str, group: list[str], configurations: list[str]):
     table = plot_all(csv, group, PLOTS / name)
     (OUT / f"{name}.txt").write_text(table + "\n", encoding="utf-8")
     print(f"\n{name}\n{table}")
+
 
 def main():
     parser = argparse.ArgumentParser(description="Compare the methods of project2.py against the default settings.")
@@ -119,6 +125,7 @@ def main():
     for comparison in comparisons:
         compare(comparison, *COMPARISONS[comparison])
     print(f"\nTables in {OUT}/, graphs in {PLOTS}/<comparison>/")
+
 
 if __name__ == "__main__":
     main()

@@ -149,6 +149,7 @@ class Grid():
 
         return cls(width=width, height=height, start=start, treasures=treasures)
 
+
 class Memory():
 
     def __init__(self, *, data: Sequence[int]):
@@ -193,6 +194,7 @@ INCREMENT_META = InstructionMeta(0, "INC")
 DECREMENT_META = InstructionMeta(1, "DEC") 
 JUMP_META = InstructionMeta(2, "JMP") 
 WRITE_META = InstructionMeta(3, "WRT")
+
 
 class Instruction(ABC):
 
@@ -255,6 +257,7 @@ INSTRUCTION_REGISTRY = {
     WRITE_META.code: Write,
 }
 
+
 def decode(n: int) -> Instruction:
     code, arg = n >> 6, n & 0b111111
     cls = INSTRUCTION_REGISTRY.get(code, None)
@@ -262,8 +265,10 @@ def decode(n: int) -> Instruction:
         raise ValueError(f"Instruction with code '{code}' does not exist.")
     return cls(arg)
 
+
 def as_binary_str(n: int, bits: int = 8) -> str:
     return "".join(str((n >> i) & 1) for i in range(bits - 1, -1, -1))
+
 
 class VirtualMachine():
 
@@ -318,6 +323,7 @@ class VirtualMachine():
         self._halted = False
         self.output.clear() 
 
+
 def evaluate(individual: Individual, vm: VirtualMachine, grid: Grid) -> float:
 
     vm.reset(individual)
@@ -334,15 +340,17 @@ def evaluate(individual: Individual, vm: VirtualMachine, grid: Grid) -> float:
 
     return grid.fitness()
 
+
 def generate_population(cells: int = 64, n: int = 20, init_cells: int | None = None) -> list[Individual]:
-    """Random individuals; only the first init_cells cells are randomized, the rest stay zero."""
     if init_cells is None:
         init_cells = cells
     return [bytes(random.randint(0, 255) if i < init_cells else 0 for i in range(cells)) for _ in range(n)]
 
+
 def select_roulette(population: list[Individual], fits: list[float]) -> tuple[Individual, Individual]:
     father, mother = random.choices(population, weights=fits, k=2)
     return father, mother
+
 
 def select_tournament(population: list[Individual], fits: list[float], size: int = 3) -> tuple[Individual, Individual]:
     def pick():
@@ -350,25 +358,30 @@ def select_tournament(population: list[Individual], fits: list[float], size: int
         return population[max(idx, key=lambda i: fits[i])]
     return pick(), pick()
 
+
 SELECTIONS: dict[str, Callable[[list[Individual], list[float]], tuple[Individual, Individual]]] = {
     "ROULETTE": select_roulette,
     "TOURNAMENT": select_tournament
 }
+
 
 def crossover_one_point(father: Individual, mother: Individual) -> tuple[Individual, Individual]:
     length = min(len(father), len(mother))
     cut = random.randint(1, length - 1)
     return father[:cut] + mother[cut:], mother[:cut] + father[cut:]
 
+
 def crossover_two_point(father: Individual, mother: Individual) -> tuple[Individual, Individual]:
     length = min(len(father), len(mother))
     a, b = sorted(random.sample(range(1, length), 2))
     return father[:a] + mother[a:b] + father[b:], mother[:a] + father[a:b] + mother[b:]
 
+
 CROSSOVERS: dict[str, Callable[[Individual, Individual], tuple[Individual, Individual]]] = {
     "ONE_POINT": crossover_one_point,
     "TWO_POINT": crossover_two_point,
 }
+
 
 @dataclass(frozen=True)
 class MutationRates():
@@ -379,6 +392,7 @@ class MutationRates():
     swap: float = 0.05
     insert: float = 0.05
     delete: float = 0.05
+
 
 def mutate(individual: Individual, rates: MutationRates = MutationRates()) -> Individual:
     individual = bytearray(individual)
@@ -406,6 +420,7 @@ def mutate(individual: Individual, rates: MutationRates = MutationRates()) -> In
 
     return bytes(individual)
 
+
 def print_solution(individual: Individual, vm: VirtualMachine, grid: Grid, delay: float = 0.15):
 
     fitness = evaluate(individual, vm, grid)
@@ -416,6 +431,7 @@ def print_solution(individual: Individual, vm: VirtualMachine, grid: Grid, delay
         print(f"  {address:02d}: {as_binary_str(value)}  {decode(value)}")
     print("Path:", " ".join(vm.output))
     animate(grid, vm.output.copy(), delay)
+
 
 def animate(grid: Grid, path: list[str], delay: float = 0.15):
 
@@ -446,6 +462,7 @@ def animate(grid: Grid, path: list[str], delay: float = 0.15):
 
     print(f"Legend: S start  @ walker  {ARROWS['P']} path  T treasure  $ found")
 
+
 GENERATION_FIELDS = [
     "generation",
     "best_fitness",
@@ -457,6 +474,7 @@ GENERATION_FIELDS = [
     "unique",
     "elapsed", 
 ]
+
 
 class GenerationLog():
 
@@ -482,6 +500,7 @@ class GenerationLog():
     def __exit__(self, *exc):
         if self._file is not None:
             self._file.close()
+
 
 def main(
     pop_size: int = 30, 
@@ -602,11 +621,13 @@ def main(
             if answer.strip().lower() != "y":
                 return
 
+
 def probability(text: str) -> float:
     value = float(text)
     if not 0 <= value <= 1:
         raise argparse.ArgumentTypeError(f"{value} is not a probability in [0, 1].")
     return value
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
@@ -643,6 +664,7 @@ def parse_args() -> argparse.Namespace:
     logs.add_argument("--export", type=Path, default=DEFAULT_EXPORT, help="log output file")
 
     return parser.parse_args()
+
 
 if __name__ == "__main__":
     args = parse_args()

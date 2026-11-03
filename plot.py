@@ -28,6 +28,7 @@ def load(path: Path, group: list[str]) -> tuple[pd.DataFrame, pd.DataFrame]:
 
     return df, runs
 
+
 def plot_fitness(df: pd.DataFrame, runs: pd.DataFrame, out: Path):
 
     best = df.pivot(index="generation", columns="run", values="best_so_far").ffill()
@@ -45,6 +46,7 @@ def plot_fitness(df: pd.DataFrame, runs: pd.DataFrame, out: Path):
     fig.tight_layout()
     fig.savefig(out / "fitness.png", dpi=150)
 
+
 def plot_success(runs: pd.DataFrame, out: Path):
     generations = range(1, int(runs["generations"].max()) + 1)
 
@@ -58,6 +60,7 @@ def plot_success(runs: pd.DataFrame, out: Path):
     ax.legend()
     fig.tight_layout()
     fig.savefig(out / "success.png", dpi=150)
+
 
 def plot_results(runs: pd.DataFrame, out: Path):
     solved = runs.dropna(subset=["solved_at"])
@@ -76,6 +79,7 @@ def plot_results(runs: pd.DataFrame, out: Path):
     fig.tight_layout()
     fig.savefig(out / "results.png", dpi=150)
 
+
 def summary(runs: pd.DataFrame) -> pd.DataFrame:
     table = runs.groupby("label").agg(
         runs=("solved_at", "size"),
@@ -87,6 +91,7 @@ def summary(runs: pd.DataFrame) -> pd.DataFrame:
     )
     table.insert(2, "solved_%", 100 * table["solved"] / table["runs"])
     return table.round(1)
+
 
 def main():
     parser = argparse.ArgumentParser(description="Plot runs logged with `project2.py --export FILE`.")
@@ -116,6 +121,7 @@ def main():
 
     if args.show:
         plt.show()
+
 
 if __name__ == "__main__":
     main()

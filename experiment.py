@@ -16,6 +16,7 @@ CONFIGURATIONS: dict[str, tuple[str, dict]] = {
     "best_find_best": ("best + find-best", {**BEST, "find_best": True}),
 }
 
+
 def main():
     parser = argparse.ArgumentParser(description="Run the best configuration from compare.py on new seeds.")
     parser.add_argument("--seeds", type=int, default=100, help="seeds per configuration")
